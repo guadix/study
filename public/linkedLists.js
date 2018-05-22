@@ -8,7 +8,7 @@ function printCircle(num, val) {
   const circles = svgContainer.selectAll('circle')
     .data([num])
     .enter()
-    .append('circle')
+    .append('circle');
 
   circles
     .attr('cx', d => d)
@@ -31,19 +31,22 @@ function printCircle(num, val) {
     });
 
   // Add the SVG Text Element to the svgContainer
-//  const text = svgContainer.selectAll('text')
-//    .data([val])
-//    .enter()
-//    .append('text');
-//
-//  // Add SVG Text Element Attributes
-//  text
-//    .attr('x', function(d) { return d.cx; })
-//    .attr('y', function(d) { return d.cy; })
-//    .text( function (d) { return '( ' + d.cx + ', ' + d.cy +' )'; })
-//    .attr('font-family', 'sans-serif')
-//    .attr('font-size', '20px')
-//    .attr('fill', 'red');
+  const text = svgContainer.selectAll('text')
+    .data([{
+      val,
+      num,
+    }])
+    .enter()
+    .append('text');
+
+  // Add SVG Text Element Attributes
+  text
+    .attr('x', d => d.num-10)
+    .attr('y', d => d.num+10)
+    .text(d => `${d.val}`)
+    .attr('font-family', 'sans-serif')
+    .attr('font-size', '20px')
+    .attr('fill', 'red');
 }
 
 const LinkedList = (node) => {
@@ -55,7 +58,7 @@ const LinkedList = (node) => {
   );
 
   const print = (num = 30, current = head) => {
-    printCircle(current.val);
+    printCircle(num, current.val);
     if (current.next !== null) {
       print(num, current.next);
     }
@@ -82,19 +85,56 @@ const Node = (value) => {
 };
 
 export function removeDuplicates() {
-  const head = Node(42);
-  const node2 = Node(50);
-  const node3 = Node(250);
-  const node4 = Node(300);
-  const list = LinkedList(head);
+  function removeDupsRec(node, foundMap) {
+    if (node.next === null) {
+      return;
+    }
 
-  list.addNode(node2);
-  list.addNode(node3);
-  list.addNode(node4);
+    if (foundMap[node.next.value]) {
+      node.next = node.next.next;
+    } else {
+      foundMap[node.next.value] = true;
+    }
+
+    if (node.next !== null) {
+        removeDupsRec(node.next, foundMap);
+    }
+  }
+
+  function removeDups(list) {
+    // create a hash to store found values
+    // tranverse the list
+    // if next node's value is not in the hash, add it and continue
+    // if it's in the hash, remove the next node
+
+    const { head } = list;
+    const foundMap = {
+      [head.val]: true,
+    };
+
+    removeDupsRec(head, foundMap);
+  }
+
+  const head = Node(42);
+  const children = [
+    Node(50),
+    Node(50),
+    Node(250),
+    Node(42),
+    Node(300),
+    Node(300),
+  ];
+
+  const list = LinkedList(head);
+  children.map(child => list.addNode(child));
+
   console.log(list);
-  list.print(30);
+  list.print();
+  removeDups(list);
+  list.print();
 }
 
 export function getKthToLast() {
+  // Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list.
 }
 

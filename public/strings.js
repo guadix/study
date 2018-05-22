@@ -74,7 +74,7 @@ export function oneAwayExercise() {
   }, {
     first: 'pera',
     second: 'pppera'
-  }]
+  }];
 
   for (let test of testInput) {
     console.log(`${test.first} ${test.second}`, isOneAway(test.first, test.second));
@@ -86,11 +86,11 @@ export function stringCompressionExercise() {
   function compress(s) {
     let repetitions = 0;
     let compressed = [];
-    const sArray = s.split('')
+    const sArray = s.split('');
     for (let i = 1; i < sArray.length; i++) {
       repetitions++;
       if (sArray[i] !== sArray[i-1]) {
-        compressed.push(sArray[i-1])
+        compressed.push(sArray[i-1]);
         compressed.push(repetitions);
         repetitions = 0;
       }
@@ -104,7 +104,7 @@ export function stringCompressionExercise() {
     'aabBbBccccaa',
   ];
 
-  for (let test of inputString) {
+  for (const test of inputString) {
     console.log(compress(test));
   }
 }

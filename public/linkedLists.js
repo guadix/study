@@ -1,6 +1,4 @@
 function printCircle(num, val) {
-  const spaceCircles = [30, 70, 110, 150];
-
   const svgContainer = d3.select('body').append('svg')
     .attr('width', 200)
     .attr('height', 200);
@@ -41,8 +39,8 @@ function printCircle(num, val) {
 
   // Add SVG Text Element Attributes
   text
-    .attr('x', d => d.num-10)
-    .attr('y', d => d.num+10)
+    .attr('x', d => d.num - 10)
+    .attr('y', d => d.num + 10)
     .text(d => `${d.val}`)
     .attr('font-family', 'sans-serif')
     .attr('font-size', '20px')
@@ -58,7 +56,7 @@ const LinkedList = (node) => {
   );
 
   const print = (num = 30, current = head) => {
-    printCircle(num, current.val);
+    current.print(num);
     if (current.next !== null) {
       print(num, current.next);
     }
@@ -77,10 +75,12 @@ const LinkedList = (node) => {
 const Node = (value) => {
   const val = value;
   const next = null;
+  const print = num => printCircle(num, val);
 
   return {
     val,
     next,
+    print,
   };
 };
 
@@ -136,5 +136,70 @@ export function removeDuplicates() {
 
 export function getKthToLast() {
   // Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list.
+  function kTh(list, k) {
+    const { head } = list;
+    let runner = head;
+    let slower = head;
+    let count = 0;
+
+    while (runner.next !== null && count < k) {
+      runner = runner.next;
+      count++;
+    }
+
+    // this is incorrect if there are less that K elements
+    if (runner.next === null) {
+      return runner;
+    }
+
+    while (runner.next !== null) {
+      runner = runner.next;
+      slower = slower.next;
+    }
+
+    return slower;
+  }
+
+  const head = Node(42);
+  const children = [
+    Node(50),
+    Node(50),
+    Node(250),
+    Node(42),
+    Node(300),
+    Node(300),
+  ];
+
+  const list = LinkedList(head);
+  children.map(child => list.addNode(child));
+
+  const kthNode = kTh(list, 6);
+  kthNode.print(30);
 }
+
+export function deleteMiddleNode() {
+  function deleteMiddle(node) {
+    if (node.next !== null) {
+      node.val = node.next.val;
+      node.next = node.next.next;
+    }
+  }
+
+  const head = Node(42);
+  const children = [
+    Node(25),
+    Node(50),
+    Node(250),
+    Node(42),
+    Node(300),
+    Node(300),
+  ];
+
+  const list = LinkedList(head);
+  children.map(child => list.addNode(child));
+
+  deleteMiddle(children[2]);
+  console.log(list);
+}
+
 

@@ -1,7 +1,16 @@
 import { oneAwayExercise, stringCompressionExercise } from '/strings.js';
- import {removeDuplicates } from '/linkedLists.js'
+import { deleteMiddleNode, getKthToLast, removeDuplicates } from '/linkedLists.js';
+import { testStack, testQueue } from '/stackAndQueue.js';
 
-removeDuplicates();
+// removeDuplicates();
+// getKthToLast();
+
+// testStack();
+// testQueue();
+
+if (false) {
+  deleteMiddleNode();
+}
 
 if (false) {
   oneAwayExercise();
